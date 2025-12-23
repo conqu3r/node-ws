@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Tools - Online Utilities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .tool-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .tool-card textarea,
+        .tool-card input[type="text"],
+        .tool-card input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+        }
+
+        .tool-card textarea:focus,
+        .tool-card input[type="text"]:focus,
+        .tool-card input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .tool-card textarea {
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        button.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            min-height: 50px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .result-box.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .result-box.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+            opacity: 0.9;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠️ Developer Tools</h1>
+            <p>Professional Online Utilities for Developers</p>
+        </header>
+
+        <div class="tools-grid">
+            <!-- Base64 Encoder/Decoder -->
+            <div class="tool-card">
+                <h2>Base64 Encoder/Decoder</h2>
+                <label class="label">Input Text:</label>
+                <textarea id="base64Input" placeholder="Enter text here..."></textarea>
+                <div class="button-group">
+                    <button onclick="base64Encode()">Encode</button>
+                    <button onclick="base64Decode()" class="secondary">Decode</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="base64Result" class="result-box"></div>
+            </div>
+
+            <!-- URL Encoder/Decoder -->
+            <div class="tool-card">
+                <h2>URL Encoder/Decoder</h2>
+                <label class="label">Input URL/Text:</label>
+                <textarea id="urlInput" placeholder="Enter URL or text here..."></textarea>
+                <div class="button-group">
+                    <button onclick="urlEncode()">Encode</button>
+                    <button onclick="urlDecode()" class="secondary">Decode</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="urlResult" class="result-box"></div>
+            </div>
+
+            <!-- JSON Formatter -->
+            <div class="tool-card">
+                <h2>JSON Formatter & Validator</h2>
+                <label class="label">Input JSON:</label>
+                <textarea id="jsonInput" placeholder='{"example": "json"}'></textarea>
+                <div class="button-group">
+                    <button onclick="formatJSON()">Format</button>
+                    <button onclick="minifyJSON()" class="secondary">Minify</button>
+                    <button onclick="validateJSON()" class="success">Validate</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="jsonResult" class="result-box"></div>
+            </div>
+
+            <!-- Hash Generator -->
+            <div class="tool-card">
+                <h2>Hash Generator</h2>
+                <label class="label">Input Text:</label>
+                <textarea id="hashInput" placeholder="Enter text to hash..."></textarea>
+                <label class="label">Algorithm:</label>
+                <select id="hashAlgo">
+                    <option value="SHA-1">SHA-1</option>
+                    <option value="SHA-256" selected>SHA-256</option>
+                    <option value="SHA-384">SHA-384</option>
+                    <option value="SHA-512">SHA-512</option>
+                </select>
+                <div class="button-group">
+                    <button onclick="generateHash()">Generate Hash</button>
+                </div>
+                <label class="label">Hash Result:</label>
+                <div id="hashResult" class="result-box"></div>
+            </div>
+
+            <!-- Text Case Converter -->
+            <div class="tool-card">
+                <h2>Text Case Converter</h2>
+                <label class="label">Input Text:</label>
+                <textarea id="caseInput" placeholder="Enter text here..."></textarea>
+                <div class="button-group">
+                    <button onclick="convertCase('upper')">UPPERCASE</button>
+                    <button onclick="convertCase('lower')" class="secondary">lowercase</button>
+                    <button onclick="convertCase('title')" class="success">Title Case</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="caseResult" class="result-box"></div>
+            </div>
+
+            <!-- UUID Generator -->
+            <div class="tool-card">
+                <h2>UUID Generator</h2>
+                <label class="label">Generate UUID (Version 4):</label>
+                <div class="button-group">
+                    <button onclick="generateUUID()">Generate UUID</button>
+                    <button onclick="generateMultipleUUID()" class="secondary">Generate 10 UUIDs</button>
+                </div>
+                <label class="label">Generated UUID:</label>
+                <div id="uuidResult" class="result-box"></div>
+            </div>
+
+            <!-- Timestamp Converter -->
+            <div class="tool-card">
+                <h2>Timestamp Converter</h2>
+                <label class="label">Unix Timestamp (seconds):</label>
+                <input type="number" id="timestampInput" placeholder="1703347200">
+                <div class="button-group">
+                    <button onclick="timestampToDate()">Convert to Date</button>
+                    <button onclick="getCurrentTimestamp()" class="secondary">Get Current</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="timestampResult" class="result-box"></div>
+            </div>
+
+            <!-- Color Converter -->
+            <div class="tool-card">
+                <h2>Color Converter</h2>
+                <label class="label">Input Color (HEX):</label>
+                <input type="text" id="colorInput" placeholder="#667eea" maxlength="7">
+                <div class="button-group">
+                    <button onclick="hexToRgb()">HEX to RGB</button>
+                    <button onclick="showColorPreview()" class="secondary">Preview</button>
+                </div>
+                <label class="label">Result:</label>
+                <div id="colorResult" class="result-box"></div>
+                <div id="colorPreview" style="width: 100%; height: 50px; border-radius: 8px; margin-top: 10px; display: none;"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💻 Professional Developer Tools Collection</p>
+            <p class="info-text">All processing is done locally in your browser. No data is sent to any server.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Base64 Functions
+        function base64Encode() {
+            const input = document.getElementById('base64Input').value;
+            const result = document.getElementById('base64Result');
+            try {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                result.textContent = encoded;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        function base64Decode() {
+            const input = document.getElementById('base64Input').value;
+            const result = document.getElementById('base64Result');
+            try {
+                const decoded = decodeURIComponent(escape(atob(input)));
+                result.textContent = decoded;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: Invalid Base64 string';
+                result.className = 'result-box error';
+            }
+        }
+
+        // URL Functions
+        function urlEncode() {
+            const input = document.getElementById('urlInput').value;
+            const result = document.getElementById('urlResult');
+            try {
+                const encoded = encodeURIComponent(input);
+                result.textContent = encoded;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        function urlDecode() {
+            const input = document.getElementById('urlInput').value;
+            const result = document.getElementById('urlResult');
+            try {
+                const decoded = decodeURIComponent(input);
+                result.textContent = decoded;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: Invalid URL encoded string';
+                result.className = 'result-box error';
+            }
+        }
+
+        // JSON Functions
+        function formatJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const result = document.getElementById('jsonResult');
+            try {
+                const parsed = JSON.parse(input);
+                const formatted = JSON.stringify(parsed, null, 2);
+                result.textContent = formatted;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        function minifyJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const result = document.getElementById('jsonResult');
+            try {
+                const parsed = JSON.parse(input);
+                const minified = JSON.stringify(parsed);
+                result.textContent = minified;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        function validateJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const result = document.getElementById('jsonResult');
+            try {
+                JSON.parse(input);
+                result.textContent = '✓ Valid JSON';
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = '✗ Invalid JSON: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        // Hash Functions
+        async function generateHash() {
+            const input = document.getElementById('hashInput').value;
+            const algo = document.getElementById('hashAlgo').value;
+            const result = document.getElementById('hashResult');
+            
+            try {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(input);
+                const hashBuffer = await crypto.subtle.digest(algo, data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                result.textContent = hashHex;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: ' + e.message;
+                result.className = 'result-box error';
+            }
+        }
+
+        // Case Converter Functions
+        function convertCase(type) {
+            const input = document.getElementById('caseInput').value;
+            const result = document.getElementById('caseResult');
+            
+            let converted;
+            switch(type) {
+                case 'upper':
+                    converted = input.toUpperCase();
+                    break;
+                case 'lower':
+                    converted = input.toLowerCase();
+                    break;
+                case 'title':
+                    converted = input.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+                    break;
+            }
+            
+            result.textContent = converted;
+            result.className = 'result-box success';
+        }
+
+        // UUID Functions
+        function generateUUID() {
+            const uuid = crypto.randomUUID();
+            const result = document.getElementById('uuidResult');
+            result.textContent = uuid;
+            result.className = 'result-box success';
+        }
+
+        function generateMultipleUUID() {
+            const uuids = [];
+            for (let i = 0; i < 10; i++) {
+                uuids.push(crypto.randomUUID());
+            }
+            const result = document.getElementById('uuidResult');
+            result.textContent = uuids.join('\n');
+            result.className = 'result-box success';
+        }
+
+        // Timestamp Functions
+        function timestampToDate() {
+            const input = document.getElementById('timestampInput').value;
+            const result = document.getElementById('timestampResult');
+            
+            try {
+                const timestamp = parseInt(input);
+                const date = new Date(timestamp * 1000);
+                const formatted = date.toISOString() + '\n' +
+                                date.toLocaleString() + '\n' +
+                                'UTC: ' + date.toUTCString();
+                result.textContent = formatted;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: Invalid timestamp';
+                result.className = 'result-box error';
+            }
+        }
+
+        function getCurrentTimestamp() {
+            const now = Math.floor(Date.now() / 1000);
+            const result = document.getElementById('timestampResult');
+            const date = new Date(now * 1000);
+            result.textContent = 'Unix Timestamp: ' + now + '\n' +
+                                'ISO String: ' + date.toISOString() + '\n' +
+                                'Local: ' + date.toLocaleString();
+            result.className = 'result-box success';
+            document.getElementById('timestampInput').value = now;
+        }
+
+        // Color Functions
+        function hexToRgb() {
+            const input = document.getElementById('colorInput').value;
+            const result = document.getElementById('colorResult');
+            
+            try {
+                let hex = input.replace('#', '');
+                if (hex.length === 3) {
+                    hex = hex.split('').map(char => char + char).join('');
+                }
+                
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                
+                if (isNaN(r) || isNaN(g) || isNaN(b)) {
+                    throw new Error('Invalid hex color');
+                }
+                
+                result.textContent = `RGB: rgb(${r}, ${g}, ${b})\n` +
+                                   `RGBA: rgba(${r}, ${g}, ${b}, 1)\n` +
+                                   `Decimal: R=${r}, G=${g}, B=${b}`;
+                result.className = 'result-box success';
+            } catch (e) {
+                result.textContent = 'Error: Invalid hex color format';
+                result.className = 'result-box error';
+            }
+        }
+
+        function showColorPreview() {
+            const input = document.getElementById('colorInput').value;
+            const preview = document.getElementById('colorPreview');
+            
+            try {
+                preview.style.backgroundColor = input;
+                preview.style.display = 'block';
+            } catch (e) {
+                preview.style.display = 'none';
+            }
+        }
+
+        // Initialize with current timestamp on load
+        window.addEventListener('load', function() {
+            const now = Math.floor(Date.now() / 1000);
+            document.getElementById('timestampInput').value = now;
+        });
+    </script>
+</body>
+</html>
